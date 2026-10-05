@@ -1,11 +1,21 @@
 import React, {useEffect, useState} from 'react';
-import Header from '../../components/Header/Header.view';
-import {Text, View, FlatList, Image, TouchableOpacity} from 'react-native';
-import Footer from '../../components/Footer/Footer.view';
+import {
+  Text,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {styles, getDrinkItemWidth} from './OrderDrink.style';
-import DrinkForm from '../../components/DrinkForm/DrinkForm.view';
+import DrinkForm from '../DrinkForm/DrinkForm.view';
 import {formatPrice} from '../../util/formatPrice';
-import {getDrinks, putDrinks} from '../../api/drinkApi';
+import {
+  deleteDrinks,
+  getDrinks,
+  postDrinks,
+  putDrinks,
+} from '../../api/drinkApi';
 
 let NUM_COLUMNS = 5;
 
@@ -15,12 +25,16 @@ export type Drink = {
   price: number;
   imageUrl: string;
 };
+export type CreateDrink = {
+  drinkName: string;
+  price: number;
+  imageUrl: string;
+};
 
 const OrderDrink = () => {
   const [drinkData, setDrinkData] = useState<Drink[]>([]);
   const [flatListWidth, setFlatListWidth] = useState(0);
   const [selectedDrink, setSelectedDrink] = useState<Drink | null>(null);
-  const [display, setDisplay] = useState<boolean>(false);
   //getDrinks
   useEffect(() => {
     const loadDrink = async () => {
@@ -34,7 +48,7 @@ const OrderDrink = () => {
     loadDrink();
   }, []);
   //handleCardItem
-  const handleCardItem = (item: any) => {
+  const handleCardItem = (item: Drink) => {
     const drinkItemWidth = getDrinkItemWidth(flatListWidth, NUM_COLUMNS);
     return (
       <View style={[styles.drinkItem, {width: drinkItemWidth}]}>
@@ -50,11 +64,14 @@ const OrderDrink = () => {
             style={styles.button}
             onPress={() => {
               setSelectedDrink(item);
-              setDisplay(true);
             }}>
             <Text>Sửa</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              handleDelete(item.drinkId);
+            }}>
             <Text>Xóa</Text>
           </TouchableOpacity>
         </View>
@@ -69,18 +86,47 @@ const OrderDrink = () => {
         item.drinkId === updatedDrink.drinkId ? updatedDrink : item,
       ),
     );
-    handleCancel(false);
   };
   //handleCancel
-  const handleCancel = (cancel: boolean) => {
-    setDisplay(cancel);
+  const handleCancel = () => {
+    setSelectedDrink(null);
+  };
+  //handleOnAdd
+  const handleOnAdd = async (addDrink: CreateDrink) => {
+    if (!addDrink.drinkName) {
+      throw new Error('Vui lòng nhập tên!');
+    }
+    if (!addDrink.price) {
+      throw new Error('Giá phải lớn hơn 0');
+    }
+    // if (!addDrink.imageUrl) {
+    //   throw new Error('Vui lòng nhập ảnh');
+    // }
+    await postDrinks(addDrink);
+    const data = await getDrinks();
+    setDrinkData(data);
+  };
+  //handleDelete
+  const handleDelete = async (id: number) => {
+    Alert.alert('Xác nhận', 'Bạn có chắc muốn xóa sản phẩm này không', [
+      {text: 'Hủy', style: 'cancel'},
+      {
+        text: 'Xóa',
+        style: 'destructive',
+        onPress: async () => {
+          await deleteDrinks(id);
+          const data = await getDrinks();
+          setDrinkData(data);
+        },
+      },
+    ]);
   };
   return (
     <View style={styles.screenContainer}>
-      <Header />
       <View style={styles.bodyContainer}>
         <FlatList
-          key={NUM_COLUMNS}
+          key={NUM_COLUMNS} // key của flatlist => thay đổi số cột nó sẽ xóa flatlist cũ tạo lại tránh gây lỗi
+          keyExtractor={item => item.drinkId.toString()} //key của các item trong flatlist => khi thêm item mới flatlist nhận diện được nó tránh lỗi
           numColumns={NUM_COLUMNS}
           data={drinkData}
           columnWrapperStyle={styles.columnWrapper}
@@ -90,17 +136,15 @@ const OrderDrink = () => {
             setFlatListWidth(width);
           }}
         />
-        {display && (
-          <View style={styles.containerRight}>
-            <DrinkForm
-              selectedDrink={selectedDrink}
-              onUpdate={handleUpdateDrink}
-              handleCancel={handleCancel}
-            />
-          </View>
-        )}
+        <View style={styles.containerRight}>
+          <DrinkForm
+            selectedDrink={selectedDrink}
+            onUpdate={handleUpdateDrink}
+            onCancel={handleCancel}
+            onAdd={handleOnAdd}
+          />
+        </View>
       </View>
-      <Footer />
     </View>
   );
 };

@@ -27,7 +27,7 @@ const LoginScreen = () => {
 
   async function handleLogin() {
     if (!email || !password) {
-      navigation.replace('OrderDrink', {email: email});
+      navigation.replace('MainScreen', {email: email});
       setErrorMessage('Phải nhập cả email và mật khẩu.');
       return;
     }
@@ -54,7 +54,7 @@ const LoginScreen = () => {
       }
       const data = await response.json();
       console.log(data);
-      navigation.replace('Dashboard', {email: email});
+      navigation.replace('MainScreen', {email: email});
     } catch (error) {
       console.log(error);
       setErrorMessage('Không thể kết nối đến máy chủ.');

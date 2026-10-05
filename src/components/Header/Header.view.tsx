@@ -10,9 +10,13 @@ import {
 } from 'react-native';
 import styles from '../Header/Header.style';
 
-const Header = () => {
+interface HeaderProps {
+  onMenuPress: (id: number) => void;
+}
+
+const Header = ({onMenuPress}: HeaderProps) => {
   const [activeMenu, setActiveMenu] = useState<number>(-1);
-  const route = useRoute<RouteProp<RootParameters, 'Dashboard'>>();
+  const route = useRoute<RouteProp<RootParameters, 'MainScreen'>>();
   const email = route.params.email;
   return (
     <>
@@ -43,7 +47,13 @@ const Header = () => {
                 <View style={styles.subMenu}>
                   {menu.items.map(item => {
                     return (
-                      <TouchableOpacity key={item.id} style={styles.subMenuItem}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          onMenuPress(item.id);
+                          setActiveMenu(-1);
+                        }}
+                        key={item.id}
+                        style={styles.subMenuItem}>
                         <Text>{item.title}</Text>
                         <View style={styles.underline} />
                       </TouchableOpacity>

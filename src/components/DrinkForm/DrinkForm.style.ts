@@ -4,17 +4,16 @@ const styles = StyleSheet.create({
     padding: 10,
     gap: 20,
   },
+  h1: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
   text: {
     fontSize: 17,
     fontWeight: '600',
   },
-  labelInput: {
-    flexDirection: 'row',
-    gap: 2,
-    alignItems: 'center',
-  },
+
   input: {
-    flex: 1,
     paddingHorizontal: 10,
     borderRadius: 5,
     paddingVertical: 8,
@@ -22,6 +21,31 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 17,
     fontWeight: '600',
+  },
+  chooseImage: {
+    width: 100,
+    height: 100,
+    backgroundColor: 'rgba(225, 227, 227, 0.5)',
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  chooseText: {
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  bachgroundChooseText: {
+    position: 'absolute',
+    borderRadius: 7,
+    padding: 4,
+    backgroundColor: 'rgba(225, 227, 227, 0.5)',
   },
   button: {
     backgroundColor: 'rgb(117, 186, 117)',

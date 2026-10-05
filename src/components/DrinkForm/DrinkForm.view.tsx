@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Pressable,
   Text,
   TextInput,
@@ -9,16 +10,22 @@ import {
   View,
 } from 'react-native';
 import styles from './DrinkForm.style';
-import {Drink} from '../../screens/OrderDrink/OrderDrink.view';
+import {CreateDrink, Drink} from '../OrderDrink/OrderDrink.view';
 import {formatPrice} from '../../util/formatPrice';
 
 interface DrinkFormProps {
   selectedDrink: Drink | null;
   onUpdate: (drink: Drink) => Promise<void>;
-  handleCancel: (cancel: boolean) => void;
+  onCancel: () => void;
+  onAdd: (addDrink: CreateDrink) => Promise<void>;
 }
 
-const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
+const DrinkForm = ({
+  selectedDrink,
+  onUpdate,
+  onCancel,
+  onAdd,
+}: DrinkFormProps) => {
   const [valueName, setValueName] = useState('');
   const [valuePrice, setValuePrice] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,12 +33,25 @@ const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
     setValueName(selectedDrink?.drinkName ?? '');
     setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '0');
   }, [selectedDrink]);
+  //handlePickImage
   const handlePickImage = async () => {};
-
+  const newDrink: CreateDrink = {
+    drinkName: valueName,
+    price: Number(valuePrice.replace(/\./g, '')),
+    imageUrl: '',
+  };
+  const handleReset = () => {
+    setValueName('');
+    setValuePrice('');
+    onCancel();
+  };
   return (
     <View style={styles.drinkFormContainer}>
-      <View style={styles.labelInput}>
-        <Text style={styles.text}>Tên: </Text>
+      <Text style={styles.h1}>
+        {selectedDrink ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}
+      </Text>
+      <View>
+        <Text style={styles.text}>Tên sản phẩm: </Text>
         <TextInput
           style={styles.input}
           value={valueName}
@@ -41,8 +61,8 @@ const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
           }}
         />
       </View>
-      <View style={styles.labelInput}>
-        <Text style={styles.text}>Giá: </Text>
+      <View>
+        <Text style={styles.text}>Giá tiền: </Text>
         <TextInput
           style={styles.input}
           value={valuePrice}
@@ -53,42 +73,36 @@ const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
           }}
         />
       </View>
-      <TouchableOpacity onPress={handlePickImage}>
-        <Text>Chọn hình ảnh</Text>
+      <TouchableOpacity style={styles.chooseImage} onPress={handlePickImage}>
+        {selectedDrink?.imageUrl && (
+          <Image style={styles.image} source={{uri: selectedDrink.imageUrl}} />
+        )}
+        <View style={styles.bachgroundChooseText}>
+          <Text style={styles.chooseText}>Chọn hình ảnh</Text>
+        </View>
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
-        {/* <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            if (!selectedDrink) {
-              return;
-            }
-            const updateDrink: Drink = {
-              ...selectedDrink,
-              drinkName: valueName,
-              price: Number(valuePrice.replace(/\./g, '')),
-            };
-            onUpdate(updateDrink);
-          }}>
-          <Text style={styles.text}>Cập nhật</Text>
-        </TouchableOpacity> */}
         <Pressable
           style={({pressed}) => [styles.button, pressed && styles.pressed]}
           onPress={async () => {
-            if (!selectedDrink) {
-              return;
-            }
-            const updateDrink: Drink = {
-              ...selectedDrink,
-              drinkName: valueName,
-              price: Number(valuePrice.replace(/\./g, '')),
-            };
             setLoading(true);
             try {
+              if (!selectedDrink) {
+                await onAdd(newDrink);
+                handleReset();
+                Alert.alert('Thành công', 'Thêm đồ uống thành công');
+                return;
+              }
+              const updateDrink: Drink = {
+                ...selectedDrink,
+                drinkName: valueName,
+                price: Number(valuePrice.replace(/\./g, '')),
+              };
               await onUpdate(updateDrink);
+              handleReset();
               Alert.alert('Thành công', 'Cập nhật đồ uống thành công');
             } catch (err) {
-              Alert.alert('Thất bại',`${err}`);
+              Alert.alert('Thất bại', `${err}`);
             } finally {
               setLoading(false);
             }
@@ -96,13 +110,15 @@ const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
           {loading ? (
             <ActivityIndicator />
           ) : (
-            <Text style={styles.text}>Cập nhật</Text>
+            <Text style={styles.text}>
+              {selectedDrink ? 'Cập nhật' : 'Thêm '}
+            </Text>
           )}
         </Pressable>
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            handleCancel(false);
+            handleReset();
           }}>
           <Text style={styles.text}>Hủy thay đổi</Text>
         </TouchableOpacity>

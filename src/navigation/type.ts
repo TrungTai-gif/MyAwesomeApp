@@ -1,9 +1,6 @@
 export type RootParameters = {
   Login: undefined;
-  Dashboard: {
-    email: string;
-  };
-  OrderDrink: {
+  MainScreen: {
     email: string;
   };
 };

@@ -1,4 +1,5 @@
-import {Drink} from '../screens/OrderDrink/OrderDrink.view';
+import {Image} from 'react-native';
+import {CreateDrink, Drink} from '../components/OrderDrink/OrderDrink.view';
 
 const API_URL = 'http://localhost:5094/api/Drink';
 
@@ -13,6 +14,28 @@ export const getDrinks = async () => {
   if (!response.ok) {
     throw new Error('Không thể lấy danh sách sản phẩm');
   }
+  return response.json();
+};
+
+//postDrinks
+export const postDrinks = async (addDrinks: CreateDrink) => {
+  const formData = new FormData();
+  formData.append('DrinkName', addDrinks.drinkName);
+  formData.append('Price', addDrinks.price);
+  // formData.append('DrinkImage', {
+  //   uri: '',
+  //   type: '',
+  //   name: '',
+  // } as any);
+  const response = await fetch(`${API_URL}`, {
+    method: 'POST',
+    body: formData,
+  });
+  if (!response.ok) {
+    throw new Error('Thêm sản phẩm thất bại');
+  }
+  console.log('Response:', response.status);
+  console.log(response);
   return response.json();
 };
 
@@ -40,4 +63,12 @@ export const putDrinks = async (updatedDrink: Drink) => {
 };
 
 //deleteDrinks
-export const deleteDrinks = async () => {};
+export const deleteDrinks = async (id: number) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error('Xóa thất bại');
+  }
+  return response;
+};

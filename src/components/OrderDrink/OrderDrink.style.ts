@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
   },
   containerRight: {
-    width: '25%',
+    width: '26%',
     backgroundColor: '#fff',
     borderRadius: 10,
   },
