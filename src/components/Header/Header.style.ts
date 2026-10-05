@@ -1,14 +1,18 @@
 import {StyleSheet} from 'react-native-windows';
-
 const styles = StyleSheet.create({
   text: {
     color: 'black',
     fontSize: 14,
     fontWeight: 400,
   },
-  screenContainer: {
-    // display: 'flex', View mặc đinh là display: flex
-    flex: 1,
+  isDisabled: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 10,
+    backgroundColor: 'transparent',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -21,26 +25,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
     paddingLeft: 15,
     // trong react native position mặc định là relative. còn web là static
-  },
-  account: {
-    position: 'absolute',
-    right: 30,
-    top: 0,
-    height: '100%',
-    marginVertical: 5,
-    justifyContent: 'center',
-  },
-  accountText: {},
-  bodyContainer: {
-    backgroundColor: '#f3f3f3',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  footerContainer: {
-    backgroundColor: '#cdcbcc',
-    padding: 7,
-    alignItems: 'center',
   },
   menuItem: {
     paddingVertical: 4,
@@ -79,15 +63,13 @@ const styles = StyleSheet.create({
   subMenuItem: {
     paddingVertical: 4,
   },
-  isDisabled: {
+  account: {
     position: 'absolute',
+    right: 30,
     top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-    zIndex: 10,
-    backgroundColor: 'transparent',
+    height: '100%',
+    marginVertical: 5,
+    justifyContent: 'center',
   },
 });
-
 export default styles;

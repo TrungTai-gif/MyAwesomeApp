@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   ActivityIndicator,
-  // Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -10,8 +9,9 @@ import {
   View,
 } from 'react-native';
 import styles from './LoginScreen.style';
-import {useNavigation, NavigationProp} from '@react-navigation/native';
-import { Rootparameters } from '../../navigation/AppNavigator';
+import { useNavigation } from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import { RootParameters } from '../../navigation/type';
 
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
@@ -22,11 +22,12 @@ const LoginScreen = () => {
   const [loading, setLoading] = useState(false);
   const [errorMasage, setErrorMessage] = useState('');
   const navigation =
-    useNavigation<NavigationProp<Rootparameters, 'Dashboard'>>();
+    useNavigation<StackNavigationProp<RootParameters, 'Login'>>();
+  const passwordRef = useRef<TextInput>(null);
 
   async function handleLogin() {
     if (!email || !password) {
-      navigation.navigate('Dashboard', {email: email});
+      navigation.replace('OrderDrink', {email: email});
       setErrorMessage('Phải nhập cả email và mật khẩu.');
       return;
     }
@@ -37,7 +38,7 @@ const LoginScreen = () => {
     setErrorMessage('');
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000', {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +54,7 @@ const LoginScreen = () => {
       }
       const data = await response.json();
       console.log(data);
-      navigation.navigate('Dashboard', {email: email});
+      navigation.replace('Dashboard', {email: email});
     } catch (error) {
       console.log(error);
       setErrorMessage('Không thể kết nối đến máy chủ.');
@@ -74,9 +75,11 @@ const LoginScreen = () => {
           <Text style={styles.title}>MÊ LINH COFFEE</Text>
           <Text>Đăng nhập vào hệ thống:</Text>
         </View>
-        <View style={[styles.errorBox, !errorMasage && {display: 'none'}]}>
-          <Text style={styles.errorText}>{errorMasage}</Text>
-        </View>
+        {errorMasage && (
+          <View style={styles.errorBox}>
+            <Text style={styles.errorText}>{errorMasage}</Text>
+          </View>
+        )}
         <View>
           <Text style={styles.lable}>Địa chỉ Email</Text>
           <TextInput
@@ -88,6 +91,7 @@ const LoginScreen = () => {
               setErrorMessage('');
             }}
             spellCheck={false}
+            onSubmitEditing={() => passwordRef.current?.focus()}
           />
           <Text style={styles.lable}>Mật khẩu</Text>
           <TextInput
@@ -99,6 +103,8 @@ const LoginScreen = () => {
               setPassword(text);
               setErrorMessage('');
             }}
+            ref={passwordRef}
+            onSubmitEditing={handleLogin}
           />
         </View>
         <Pressable
