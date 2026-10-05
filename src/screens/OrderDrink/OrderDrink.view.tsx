@@ -5,6 +5,7 @@ import Footer from '../../components/Footer/Footer.view';
 import {styles, getDrinkItemWidth} from './OrderDrink.style';
 import DrinkForm from '../../components/DrinkForm/DrinkForm.view';
 import {formatPrice} from '../../util/formatPrice';
+import {getDrinks, putDrinks} from '../../api/drinkApi';
 
 let NUM_COLUMNS = 5;
 
@@ -20,18 +21,17 @@ const OrderDrink = () => {
   const [flatListWidth, setFlatListWidth] = useState(0);
   const [selectedDrink, setSelectedDrink] = useState<Drink | null>(null);
   const [display, setDisplay] = useState<boolean>(false);
+  //getDrinks
   useEffect(() => {
-    fetch('http://localhost:5094/api/Drink', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(res => res.json())
-      .then(data => {
+    const loadDrink = async () => {
+      try {
+        const data = await getDrinks();
         setDrinkData(data);
-      })
-      .catch(err => console.log(err));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    loadDrink();
   }, []);
   //handleCardItem
   const handleCardItem = (item: any) => {
@@ -63,37 +63,13 @@ const OrderDrink = () => {
   };
   //handleUpdateDrink
   const handleUpdateDrink = async (updatedDrink: Drink) => {
-    try {
-      const formData = new FormData();
-      formData.append('DrinkName', updatedDrink.drinkName);
-      formData.append('Price', updatedDrink.price.toString());
-      // if (updatedDrink.imageUrl) {
-      //   formData.append('DrinkImage', {
-      //     uri: updatedDrink.imageUrl,
-      //     type: '',
-      //     name: '',
-      //   }) as any;
-      // }
-      const response = await fetch(
-        `http://localhost:5094/api/Drink/${updatedDrink.drinkId}`,
-        {
-          method: 'PUT',
-          body: formData,
-        },
-      );
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      if (!response.ok) {
-        return;
-      }
-      setDrinkData(list =>
-        list.map(item =>
-          item.drinkId === updatedDrink.drinkId ? updatedDrink : item,
-        ),
-      );
-      handleCancel(false);
-    } catch (err) {
-      console.log(err);
-    }
+    await putDrinks(updatedDrink);
+    setDrinkData(list =>
+      list.map(item =>
+        item.drinkId === updatedDrink.drinkId ? updatedDrink : item,
+      ),
+    );
+    handleCancel(false);
   };
   //handleCancel
   const handleCancel = (cancel: boolean) => {

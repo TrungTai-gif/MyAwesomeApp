@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Pressable,
   Text,
   TextInput,
@@ -85,11 +86,18 @@ const DrinkForm = ({selectedDrink, onUpdate, handleCancel}: DrinkFormProps) => {
             setLoading(true);
             try {
               await onUpdate(updateDrink);
+              Alert.alert('Thành công', 'Cập nhật đồ uống thành công');
+            } catch (err) {
+              Alert.alert('Thất bại',`${err}`);
             } finally {
               setLoading(false);
             }
           }}>
-          {loading ? <ActivityIndicator /> : <Text style={styles.text}>Cập nhật</Text>}
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.text}>Cập nhật</Text>
+          )}
         </Pressable>
         <TouchableOpacity
           style={styles.button}
