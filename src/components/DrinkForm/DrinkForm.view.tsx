@@ -12,6 +12,7 @@ import {
 import styles from './DrinkForm.style';
 import {CreateDrink, Drink} from '../OrderDrink/OrderDrink.view';
 import {formatPrice} from '../../util/formatPrice';
+import {NativeModules} from 'react-native';
 
 interface DrinkFormProps {
   selectedDrink: Drink | null;
@@ -29,21 +30,36 @@ const DrinkForm = ({
   const [valueName, setValueName] = useState('');
   const [valuePrice, setValuePrice] = useState('');
   const [loading, setLoading] = useState(false);
+  const {ImagePicker} = NativeModules;
+  const [imagePath, setImagePath] = useState('');
   useEffect(() => {
     setValueName(selectedDrink?.drinkName ?? '');
     setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '0');
   }, [selectedDrink]);
-  //handlePickImage
-  const handlePickImage = async () => {};
-  const newDrink: CreateDrink = {
-    drinkName: valueName,
-    price: Number(valuePrice.replace(/\./g, '')),
-    imageUrl: '',
-  };
   const handleReset = () => {
     setValueName('');
     setValuePrice('');
     onCancel();
+    setImagePath('');
+  };
+  //handlePickImage
+  const newDrink: CreateDrink = {
+    drinkName: valueName,
+    price: Number(valuePrice.replace(/\./g, '')),
+    imageUrl: imagePath,
+  };
+
+  const handlePickImage = async () => {
+    try {
+      const path = await ImagePicker.PickImage();
+      console.log('Ảnh đã chọn:', path);
+      if (!path) {
+        return;
+      }
+      setImagePath(path);
+    } catch (error) {
+      console.log('Lỗi chọn ảnh:', error);
+    }
   };
   return (
     <View style={styles.drinkFormContainer}>
@@ -74,9 +90,11 @@ const DrinkForm = ({
         />
       </View>
       <TouchableOpacity style={styles.chooseImage} onPress={handlePickImage}>
-        {selectedDrink?.imageUrl && (
+        {imagePath ? (
+          <Image style={styles.image} source={{uri: imagePath}} />
+        ) : selectedDrink?.imageUrl ? (
           <Image style={styles.image} source={{uri: selectedDrink.imageUrl}} />
-        )}
+        ) : null}
         <View style={styles.bachgroundChooseText}>
           <Text style={styles.chooseText}>Chọn hình ảnh</Text>
         </View>
@@ -97,6 +115,7 @@ const DrinkForm = ({
                 ...selectedDrink,
                 drinkName: valueName,
                 price: Number(valuePrice.replace(/\./g, '')),
+                imageUrl: imagePath,
               };
               await onUpdate(updateDrink);
               handleReset();

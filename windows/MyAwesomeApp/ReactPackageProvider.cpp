@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ReactPackageProvider.h"
+#include "ImagePicker.h"
 #include "NativeModules.h"
 
 using namespace winrt::Microsoft::ReactNative;
@@ -9,7 +10,7 @@ namespace winrt::MyAwesomeApp::implementation
 
 void ReactPackageProvider::CreatePackage(IReactPackageBuilder const &packageBuilder) noexcept
 {
-    AddAttributedModules(packageBuilder, true);
+    AddAttributedModules(packageBuilder, false);
 }
 
 } // namespace winrt::MyAwesomeApp::implementation

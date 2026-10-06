@@ -71,6 +71,7 @@ const OrderDrink = () => {
             style={styles.button}
             onPress={() => {
               handleDelete(item.drinkId);
+              setSelectedDrink(null);
             }}>
             <Text>Xóa</Text>
           </TouchableOpacity>
@@ -99,9 +100,9 @@ const OrderDrink = () => {
     if (!addDrink.price) {
       throw new Error('Giá phải lớn hơn 0');
     }
-    // if (!addDrink.imageUrl) {
-    //   throw new Error('Vui lòng nhập ảnh');
-    // }
+    if (!addDrink.imageUrl) {
+      throw new Error('Vui lòng nhập ảnh');
+    }
     await postDrinks(addDrink);
     const data = await getDrinks();
     setDrinkData(data);

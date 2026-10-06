@@ -1,4 +1,3 @@
-import {Image} from 'react-native';
 import {CreateDrink, Drink} from '../components/OrderDrink/OrderDrink.view';
 
 const API_URL = 'http://localhost:5094/api/Drink';
@@ -20,13 +19,27 @@ export const getDrinks = async () => {
 //postDrinks
 export const postDrinks = async (addDrinks: CreateDrink) => {
   const formData = new FormData();
+  const extension = addDrinks.imageUrl.split('.').pop()?.toLowerCase();
+  const mimeType =
+    extension === 'png'
+      ? 'image/png'
+      : extension === 'webp'
+      ? 'image/webp'
+      : 'image/jpeg';
   formData.append('DrinkName', addDrinks.drinkName);
   formData.append('Price', addDrinks.price);
-  // formData.append('DrinkImage', {
-  //   uri: '',
-  //   type: '',
-  //   name: '',
-  // } as any);
+  if (addDrinks.imageUrl) {
+    formData.append('DrinkImage', {
+      uri: addDrinks.imageUrl,
+      type: mimeType,
+      name: addDrinks.imageUrl.split('\\').pop() || `drink.${extension}`,
+    } as any);
+  }
+  console.log('UPLOAD:', {
+    path: addDrinks.imageUrl,
+    extension,
+    mimeType,
+  });
   const response = await fetch(`${API_URL}`, {
     method: 'POST',
     body: formData,
@@ -42,15 +55,22 @@ export const postDrinks = async (addDrinks: CreateDrink) => {
 //putDrinks
 export const putDrinks = async (updatedDrink: Drink) => {
   const formData = new FormData();
+  const extension = updatedDrink.imageUrl.split('.').pop()?.toLowerCase();
+  const mimeType =
+    extension === 'png'
+      ? 'image/png'
+      : extension === 'webp'
+      ? 'image/webp'
+      : 'image/jpeg';
   formData.append('DrinkName', updatedDrink.drinkName);
   formData.append('Price', updatedDrink.price.toString());
-  // if (updatedDrink.imageUrl) {
-  //   formData.append('DrinkImage', {
-  //     uri: updatedDrink.imageUrl,
-  //     type: '',
-  //     name: '',
-  //   }) as any;
-  // }
+  if (updatedDrink.imageUrl) {
+    formData.append('DrinkImage', {
+      uri: updatedDrink.imageUrl,
+      type: mimeType,
+      name: updatedDrink.imageUrl.split('\\').pop() || `drink.${extension}`,
+    } as any);
+  }
   const response = await fetch(`${API_URL}/${updatedDrink.drinkId}`, {
     method: 'PUT',
     body: formData,
