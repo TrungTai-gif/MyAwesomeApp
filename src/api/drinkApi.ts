@@ -1,4 +1,4 @@
-import {CreateDrink, Drink} from '../components/OrderDrink/OrderDrink.view';
+import {CreateDrink, UpdateDrinks} from '../screens/EditDrinks/EditDrink.view';
 
 const API_URL = 'http://localhost:5094/api/Drink';
 
@@ -19,27 +19,22 @@ export const getDrinks = async () => {
 //postDrinks
 export const postDrinks = async (addDrinks: CreateDrink) => {
   const formData = new FormData();
-  const extension = addDrinks.imageUrl.split('.').pop()?.toLowerCase();
-  const mimeType =
-    extension === 'png'
-      ? 'image/png'
-      : extension === 'webp'
-      ? 'image/webp'
-      : 'image/jpeg';
   formData.append('DrinkName', addDrinks.drinkName);
-  formData.append('Price', addDrinks.price);
+  formData.append('Price', addDrinks.price.toString());
   if (addDrinks.imageUrl) {
+    const extension = addDrinks.imageUrl.split('.').pop()?.toLowerCase();
+    const mimeType =
+      extension === 'png'
+        ? 'image/png'
+        : extension === 'webp'
+        ? 'image/webp'
+        : 'image/jpeg';
     formData.append('DrinkImage', {
       uri: addDrinks.imageUrl,
       type: mimeType,
       name: addDrinks.imageUrl.split('\\').pop() || `drink.${extension}`,
     } as any);
   }
-  console.log('UPLOAD:', {
-    path: addDrinks.imageUrl,
-    extension,
-    mimeType,
-  });
   const response = await fetch(`${API_URL}`, {
     method: 'POST',
     body: formData,
@@ -53,18 +48,18 @@ export const postDrinks = async (addDrinks: CreateDrink) => {
 };
 
 //putDrinks
-export const putDrinks = async (updatedDrink: Drink) => {
+export const putDrinks = async (updatedDrink: UpdateDrinks) => {
   const formData = new FormData();
-  const extension = updatedDrink.imageUrl.split('.').pop()?.toLowerCase();
-  const mimeType =
-    extension === 'png'
-      ? 'image/png'
-      : extension === 'webp'
-      ? 'image/webp'
-      : 'image/jpeg';
   formData.append('DrinkName', updatedDrink.drinkName);
   formData.append('Price', updatedDrink.price.toString());
   if (updatedDrink.imageUrl) {
+    const extension = updatedDrink.imageUrl.split('.').pop()?.toLowerCase();
+    const mimeType =
+      extension === 'png'
+        ? 'image/png'
+        : extension === 'webp'
+        ? 'image/webp'
+        : 'image/jpeg';
     formData.append('DrinkImage', {
       uri: updatedDrink.imageUrl,
       type: mimeType,
@@ -78,7 +73,7 @@ export const putDrinks = async (updatedDrink: Drink) => {
   if (!response.ok) {
     throw new Error('Cập nhật đồ uống thất bại');
   }
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  // await new Promise(resolve => setTimeout(resolve, 1000));
   return response;
 };
 

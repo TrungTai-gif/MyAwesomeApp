@@ -10,13 +10,17 @@ import {
   View,
 } from 'react-native';
 import styles from './DrinkForm.style';
-import {CreateDrink, Drink} from '../OrderDrink/OrderDrink.view';
+import {
+  CreateDrink,
+  UpdateDrinks,
+} from '../../screens/EditDrinks/EditDrink.view';
 import {formatPrice} from '../../util/formatPrice';
 import {NativeModules} from 'react-native';
+import { Drink } from '../DrinkList/DrinkList.view';
 
 interface DrinkFormProps {
   selectedDrink: Drink | null;
-  onUpdate: (drink: Drink) => Promise<void>;
+  onUpdate: (drink: UpdateDrinks) => Promise<void>;
   onCancel: () => void;
   onAdd: (addDrink: CreateDrink) => Promise<void>;
 }
@@ -111,7 +115,7 @@ const DrinkForm = ({
                 Alert.alert('Thành công', 'Thêm đồ uống thành công');
                 return;
               }
-              const updateDrink: Drink = {
+              const updateDrink: UpdateDrinks = {
                 ...selectedDrink,
                 drinkName: valueName,
                 price: Number(valuePrice.replace(/\./g, '')),
