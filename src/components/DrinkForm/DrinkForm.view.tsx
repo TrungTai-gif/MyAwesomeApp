@@ -38,14 +38,9 @@ const DrinkForm = ({
   const [imagePath, setImagePath] = useState('');
   useEffect(() => {
     setValueName(selectedDrink?.drinkName ?? '');
-    setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '0');
-  }, [selectedDrink]);
-  const handleReset = () => {
-    setValueName('');
-    setValuePrice('');
-    onCancel();
+    setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '');
     setImagePath('');
-  };
+  }, [selectedDrink]);
   //handlePickImage
   const newDrink: CreateDrink = {
     drinkName: valueName,
@@ -111,7 +106,7 @@ const DrinkForm = ({
             try {
               if (!selectedDrink) {
                 await onAdd(newDrink);
-                handleReset();
+                onCancel();
                 Alert.alert('Thành công', 'Thêm đồ uống thành công');
                 return;
               }
@@ -122,7 +117,7 @@ const DrinkForm = ({
                 imageUrl: imagePath,
               };
               await onUpdate(updateDrink);
-              handleReset();
+              onCancel();
               Alert.alert('Thành công', 'Cập nhật đồ uống thành công');
             } catch (err) {
               Alert.alert('Thất bại', `${err}`);
@@ -141,7 +136,7 @@ const DrinkForm = ({
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            handleReset();
+            onCancel();
           }}>
           <Text style={styles.text}>Hủy thay đổi</Text>
         </TouchableOpacity>

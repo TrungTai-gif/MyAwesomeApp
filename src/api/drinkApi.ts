@@ -1,4 +1,5 @@
 import {CreateDrink, UpdateDrinks} from '../screens/EditDrinks/EditDrink.view';
+import apiClient from './apiClient';
 
 const API_URL = 'http://localhost:5094/api/Drink';
 
@@ -35,7 +36,7 @@ export const postDrinks = async (addDrinks: CreateDrink) => {
       name: addDrinks.imageUrl.split('\\').pop() || `drink.${extension}`,
     } as any);
   }
-  const response = await fetch(`${API_URL}`, {
+  const response = await apiClient(`${API_URL}`, {
     method: 'POST',
     body: formData,
   });
@@ -66,7 +67,7 @@ export const putDrinks = async (updatedDrink: UpdateDrinks) => {
       name: updatedDrink.imageUrl.split('\\').pop() || `drink.${extension}`,
     } as any);
   }
-  const response = await fetch(`${API_URL}/${updatedDrink.drinkId}`, {
+  const response = await apiClient(`${API_URL}/${updatedDrink.drinkId}`, {
     method: 'PUT',
     body: formData,
   });
@@ -79,7 +80,7 @@ export const putDrinks = async (updatedDrink: UpdateDrinks) => {
 
 //deleteDrinks
 export const deleteDrinks = async (id: number) => {
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await apiClient(`${API_URL}/${id}`, {
     method: 'DELETE',
   });
   if (!response.ok) {

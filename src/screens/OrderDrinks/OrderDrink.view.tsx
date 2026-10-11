@@ -2,6 +2,8 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import styles from './OrderDrink.style';
 import DrinkList, {Drink} from '../../components/DrinkList/DrinkList.view';
+import { common } from '../../styles/common.style';
+import FormOrder from '../../components/FormOrder/FormOrder.view';
 
 interface OrderDrinkProps {
   drinkData: Drink[];
@@ -12,10 +14,11 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
     return (
       <>
         <TouchableOpacity
+          style={common.button}
           onPress={() => {
             console.log(item);
           }}>
-          <Text>Thêm đơn hàng</Text>
+          <Text style={common.buttonText}>Thêm đơn hàng</Text>
         </TouchableOpacity>
       </>
     );
@@ -23,6 +26,9 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
   return (
     <View style={styles.bodyContainer}>
       <DrinkList drinkData={drinkData} renderAction={renderDrinkAction} />
+      <View style={styles.containerRight}>
+        <FormOrder />
+      </View>
     </View>
   );
 };

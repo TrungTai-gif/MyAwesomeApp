@@ -21,8 +21,9 @@ export const menus = [
     items: [{title: 'Báo cáo chung', id: 3.1}],
   },
   {
+    id: 4,
     title: 'Cấu hình',
-    items: [],
+    items: [{title: 'Đăng xuất', id: 4.1}],
   },
 ];
 

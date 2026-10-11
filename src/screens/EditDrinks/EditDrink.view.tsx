@@ -31,13 +31,21 @@ interface EditDrinkProps {
 
 const EditDrink = ({drinkData, setDrinkData}: EditDrinkProps) => {
   const [selectedDrink, setSelectedDrink] = useState<Drink | null>(null);
-  //getDrinks
-
   //handleUpdateDrink
   const handleUpdateDrink = async (updatedDrink: UpdateDrinks) => {
     await putDrinks(updatedDrink);
-    const data = await getDrinks();
-    setDrinkData(data);
+    setDrinkData((prev: Drink[]) =>
+      prev.map((item: Drink) =>
+        item.drinkId === updatedDrink.drinkId
+          ? {
+              ...item,
+              drinkName: updatedDrink.drinkName,
+              price: updatedDrink.price,
+              imageUrl: updatedDrink.imageUrl || item.imageUrl,
+            }
+          : item,
+      ),
+    );
   };
   //handleOnAdd
   const handleOnAdd = async (addDrink: CreateDrink) => {
@@ -55,17 +63,20 @@ const EditDrink = ({drinkData, setDrinkData}: EditDrinkProps) => {
     setDrinkData(data);
   };
   //handleDelete
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (itemDelete: Drink) => {
     Alert.alert('Xác nhận', 'Bạn có chắc muốn xóa sản phẩm này không', [
       {text: 'Hủy', style: 'cancel'},
       {
         text: 'Xóa',
         style: 'destructive',
         onPress: async () => {
-          await deleteDrinks(id);
-          const data = await getDrinks();
-          setSelectedDrink(null);
-          setDrinkData(data);
+          try {
+            await deleteDrinks(itemDelete.drinkId);
+            setDrinkData((prev: Drink[]) =>
+              prev.filter((item: Drink) => item.drinkId !== itemDelete.drinkId),
+            );
+            setSelectedDrink(null);
+          } catch (err) {}
         },
       },
     ]);
@@ -88,7 +99,7 @@ const EditDrink = ({drinkData, setDrinkData}: EditDrinkProps) => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            handleDelete(item.drinkId);
+            handleDelete(item);
           }}>
           <Text>Xóa</Text>
         </TouchableOpacity>

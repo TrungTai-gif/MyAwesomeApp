@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Image, Text, View, FlatList, LayoutChangeEvent} from 'react-native';
+import {Image, Text, View, FlatList, LayoutChangeEvent, ActivityIndicator} from 'react-native';
 import styles, {getDrinkItemWidth} from './DrinkList.style';
 import {formatPrice} from '../../util/formatPrice';
 
@@ -55,16 +55,21 @@ const DrinkList = ({drinkData, renderAction}: DrinkListProps) => {
     );
   };
   return (
-    <View style={styles.drinkList}>
-      <FlatList
-        key={columns} // key của flatlist => thay đổi số cột nó sẽ xóa flatlist cũ tạo lại tránh gây lỗi
-        keyExtractor={item => item.drinkId.toString()} //key của các item trong flatlist => khi thêm item mới flatlist nhận diện được nó tránh lỗi
-        numColumns={columns}
-        data={drinkData}
-        columnWrapperStyle={columns > 1 ? styles.columnWrapper : undefined}
-        renderItem={({item}) => handleCardItem(item)}
-        onLayout={handleLayout}
-      />
+    <View style={styles.drinkList} onLayout={handleLayout}>
+      {flatListWidth === 0 ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <FlatList
+          key={columns}
+          keyExtractor={item => item.drinkId.toString()}
+          numColumns={columns}
+          data={drinkData}
+          columnWrapperStyle={columns > 1 ? styles.columnWrapper : undefined}
+          renderItem={({item}) => handleCardItem(item)}
+        />
+      )}
     </View>
   );
 };

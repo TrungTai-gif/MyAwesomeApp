@@ -1,6 +1,28 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const API_URL = 'http://localhost:5094/api/Token';
 
-const API_URL = 'http://localhost:3000';
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await fetch(`${API_URL}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userName: email,
+        password: password,
+      }),
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = await response.json();
+    await AsyncStorage.setItem('token', data.token);
+    return data.token;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export const refreshAccessToken = async () => {
   try {

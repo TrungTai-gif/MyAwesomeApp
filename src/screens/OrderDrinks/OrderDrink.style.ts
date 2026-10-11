@@ -10,6 +10,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
   },
+  containerRight: {
+    width: '35%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+  },
 });
 
 export default styles;
