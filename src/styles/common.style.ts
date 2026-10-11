@@ -1,16 +1,41 @@
 import {StyleSheet} from 'react-native';
+import {colors} from './colors';
 
 export const common = StyleSheet.create({
   button: {
     width: '100%',
-    backgroundColor: 'rgb(103, 236, 103)',
+    backgroundColor: colors.green,
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonText: {
-    fontSize: 15,
-    fontWeight: '500',
+  buttonChange: {
+    backgroundColor: colors.caramel,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonDelete: {
+    backgroundColor: colors.danger,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonAdd: {
+    backgroundColor: colors.green,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonCancle: {
+    backgroundColor: colors.muted,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonSave: {
+    backgroundColor: colors.caramel,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textWhite: {
+    color: colors.white,
   },
 });

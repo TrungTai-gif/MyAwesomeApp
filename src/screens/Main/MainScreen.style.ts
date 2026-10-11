@@ -1,18 +1,22 @@
 import {StyleSheet} from 'react-native-windows';
+import {colors} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   text: {
-    color: 'black',
+    color: colors.coffeeDark,
     fontSize: 14,
-    fontWeight: 400,
+    fontWeight: '400',
   },
   screenContainer: {
-    // display: 'flex', View mặc đinh là display: flex
     flex: 1,
   },
-  accountText: {},
+  accountText: {
+    color: colors.white,
+    fontSize: 14,
+    fontWeight: '600',
+  },
   bodyContainer: {
-    backgroundColor: '#f3f3f3',
+    backgroundColor: colors.cream,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

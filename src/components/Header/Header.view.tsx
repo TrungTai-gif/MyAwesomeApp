@@ -65,7 +65,7 @@ const Header = ({onMenuPress}: HeaderProps) => {
           );
         })}
         <View style={styles.account}>
-          <Text>Nguời dùng: {email}</Text>
+          <Text style={styles.text}>Nguời dùng: {email}</Text>
         </View>
       </View>
     </>

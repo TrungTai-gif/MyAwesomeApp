@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 function Background() {
   return (
     <Image
-      source={require('../../assets/background4.webp')}
+      source={require('../../assets/Backgroung5.jpg')}
       style={[styles.background, StyleSheet.absoluteFill]}
     />
   );

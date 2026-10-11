@@ -1,16 +1,9 @@
 import {StyleSheet} from 'react-native-windows';
-
-const getDrinkItemWidth = (
-  flatListWidth: number,
-  numColumns: number,
-  gap = 10,
-) => {
-  return (flatListWidth - gap * (numColumns - 1)) / numColumns;
-};
+import {colors} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   bodyContainer: {
-    backgroundColor: '#f3f3f3',
+    backgroundColor: colors.cream,
     flex: 1,
     paddingHorizontal: 5,
     paddingTop: 8,
@@ -19,23 +12,24 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   price: {
-    color: '#d32f2f',
+    color: colors.danger,
     fontSize: 17,
     fontWeight: '700',
     marginTop: 4,
   },
   containerRight: {
     width: '26%',
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#E8DCCB',
   },
   button: {
     minWidth: 70,
-    backgroundColor: 'rgba(113, 163, 193, 0.7)',
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 30,
     borderRadius: 7,
   },
 });
 
-export {styles, getDrinkItemWidth};
+export {styles};

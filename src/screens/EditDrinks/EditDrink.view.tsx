@@ -9,6 +9,7 @@ import {
   putDrinks,
 } from '../../api/drinkApi';
 import DrinkList, {Drink} from '../../components/DrinkList/DrinkList.view';
+import { common } from '../../styles/common.style';
 
 export type CreateDrink = {
   drinkName: string;
@@ -90,18 +91,18 @@ const EditDrink = ({drinkData, setDrinkData}: EditDrinkProps) => {
     return (
       <>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, common.buttonChange]}
           onPress={() => {
             setSelectedDrink(item);
           }}>
-          <Text>Sửa</Text>
+          <Text style={common.textWhite}>Sửa</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, common.buttonDelete]}
           onPress={() => {
             handleDelete(item);
           }}>
-          <Text>Xóa</Text>
+          <Text style={common.textWhite}>Xóa</Text>
         </TouchableOpacity>
       </>
     );

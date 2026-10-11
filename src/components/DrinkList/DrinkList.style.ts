@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {colors} from '../../styles/colors';
 
 export const getDrinkItemWidth = (
   flatListWidth: number,
@@ -7,28 +8,32 @@ export const getDrinkItemWidth = (
 ) => {
   return (flatListWidth - gap * (numColumns - 1)) / numColumns;
 };
+
 const styles = StyleSheet.create({
   drinkList: {
     flex: 1,
+    backgroundColor: colors.cream,
   },
   drinkItem: {
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     borderRadius: 8,
     padding: 10,
     marginBottom: 20,
     justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#E8DCCB',
   },
   info: {
     marginVertical: 4,
   },
   drinkName: {
-    color: '#222',
+    color: colors.coffeeDark,
     fontSize: 16,
     fontWeight: '600',
     marginTop: 8,
   },
   price: {
-    color: '#d32f2f',
+    color: colors.danger,
     fontSize: 17,
     fontWeight: '700',
     marginTop: 4,
@@ -62,4 +67,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
 export default styles;

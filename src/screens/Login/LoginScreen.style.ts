@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native-windows';
+import {colors} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   loginContainer: {
@@ -13,8 +14,10 @@ const styles = StyleSheet.create({
   loginBox: {
     minWidth: 380,
     minHeight: 380,
-    backgroundColor: 'rgba(248, 240, 229, 0.85)',
-    borderRadius: 5,
+    backgroundColor: 'rgba(247, 241, 231, 0.92)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#DCC9B5',
     padding: 20,
     justifyContent: 'space-around',
   },
@@ -25,22 +28,24 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: '800',
+    color: colors.coffeeDark,
   },
   errorBox: {
-    backgroundColor: 'rgba(253, 230, 233, 0.85)',
+    backgroundColor: '#FBE9E7',
     paddingVertical: 9,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#e96c53',
+    borderColor: colors.danger,
     marginBottom: 10,
   },
   errorText: {
     width: '100%',
-    color: 'red',
+    color: colors.danger,
     textAlign: 'center',
   },
   lable: {
     marginBottom: 3,
+    color: colors.coffeeDark,
   },
   input: {
     paddingHorizontal: 10,
@@ -48,15 +53,20 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     minHeight: 40,
     marginBottom: 20,
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: '#DCC9B5',
+    color: colors.coffeeDark,
   },
   buttonBox: {
-    backgroundColor: '#0178d4',
+    backgroundColor: colors.coffee,
     paddingVertical: 9,
     borderRadius: 5,
   },
   buttonText: {
     textAlign: 'center',
-    color: 'white',
+    color: colors.white,
+    fontWeight: '600',
   },
   pressed: {
     opacity: 0.8,

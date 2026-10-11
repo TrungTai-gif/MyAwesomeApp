@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -16,7 +16,9 @@ import {
 } from '../../screens/EditDrinks/EditDrink.view';
 import {formatPrice} from '../../util/formatPrice';
 import {NativeModules} from 'react-native';
-import { Drink } from '../DrinkList/DrinkList.view';
+import {Drink} from '../DrinkList/DrinkList.view';
+import {common} from '../../styles/common.style';
+import {colors} from '../../styles/colors';
 
 interface DrinkFormProps {
   selectedDrink: Drink | null;
@@ -33,14 +35,21 @@ const DrinkForm = ({
 }: DrinkFormProps) => {
   const [valueName, setValueName] = useState('');
   const [valuePrice, setValuePrice] = useState('');
+  const [imagePath, setImagePath] = useState('');
   const [loading, setLoading] = useState(false);
   const {ImagePicker} = NativeModules;
-  const [imagePath, setImagePath] = useState('');
   useEffect(() => {
     setValueName(selectedDrink?.drinkName ?? '');
     setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '');
     setImagePath('');
   }, [selectedDrink]);
+  //hanldeCancel
+  const handleCancel = () => {
+    onCancel();
+    setValueName('');
+    setValuePrice('');
+    setImagePath('');
+  };
   //handlePickImage
   const newDrink: CreateDrink = {
     drinkName: valueName,
@@ -62,9 +71,11 @@ const DrinkForm = ({
   };
   return (
     <View style={styles.drinkFormContainer}>
-      <Text style={styles.h1}>
-        {selectedDrink ? 'Sửa sản phẩm' : 'Thêm sản phẩm'}
-      </Text>
+      {selectedDrink ? (
+        <Text style={styles.h1Change}>Sửa sản phẩm</Text>
+      ) : (
+        <Text style={styles.h1Add}>Thêm sản phẩm</Text>
+      )}
       <View>
         <Text style={styles.text}>Tên sản phẩm: </Text>
         <TextInput
@@ -100,7 +111,13 @@ const DrinkForm = ({
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <Pressable
-          style={({pressed}) => [styles.button, pressed && styles.pressed]}
+          style={({pressed}) => [
+            styles.button,
+            selectedDrink
+              ? {backgroundColor: colors.coffee}
+              : {backgroundColor: colors.green},
+            pressed && styles.pressed,
+          ]}
           onPress={async () => {
             setLoading(true);
             try {
@@ -128,17 +145,17 @@ const DrinkForm = ({
           {loading ? (
             <ActivityIndicator />
           ) : (
-            <Text style={styles.text}>
-              {selectedDrink ? 'Cập nhật' : 'Thêm '}
+            <Text style={[styles.text, common.textWhite]}>
+              {selectedDrink ? 'Cập nhật' : 'Thêm'}
             </Text>
           )}
         </Pressable>
         <TouchableOpacity
-          style={styles.button}
+          style={[styles.button, common.buttonCancle]}
           onPress={() => {
-            onCancel();
+            handleCancel();
           }}>
-          <Text style={styles.text}>Hủy thay đổi</Text>
+          <Text style={[styles.text, common.textWhite]}>Hủy thay đổi</Text>
         </TouchableOpacity>
       </View>
     </View>

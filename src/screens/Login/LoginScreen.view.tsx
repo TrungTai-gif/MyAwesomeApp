@@ -66,7 +66,7 @@ const LoginScreen = () => {
   return (
     <View style={styles.loginContainer}>
       <Image
-        source={require('../../assets/background3.jpg')}
+        source={require('../../assets/background5.jpg')}
         style={[StyleSheet.absoluteFill, styles.background]}
         resizeMode="cover"
       />

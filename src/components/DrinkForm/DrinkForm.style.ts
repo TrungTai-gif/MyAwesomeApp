@@ -1,36 +1,51 @@
 import {StyleSheet} from 'react-native';
+import {colors} from '../../styles/colors';
+
 const styles = StyleSheet.create({
   drinkFormContainer: {
+    height: '100%',
     padding: 10,
     gap: 20,
+    backgroundColor: colors.cream,
   },
-  h1: {
+  h1Change: {
     fontSize: 20,
     fontWeight: '700',
+    color: colors.coffee,
+  },
+  h1Add: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.greenDark,
   },
   text: {
     fontSize: 17,
     fontWeight: '600',
   },
-
   input: {
+    marginTop: 2,
     paddingHorizontal: 10,
     borderRadius: 5,
     paddingVertical: 8,
     minHeight: 30,
-    color: 'red',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: '#DCC9B5',
+    color: colors.danger,
     fontSize: 17,
     fontWeight: '600',
   },
   chooseImage: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'rgba(225, 227, 227, 0.5)',
+    width: 150,
+    height: 150,
+    backgroundColor: '#F7F1E7',
     borderWidth: 1,
-    borderColor: 'black',
+    borderStyle: 'dashed',
+    borderColor: colors.caramel,
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   image: {
     width: '100%',
@@ -40,15 +55,15 @@ const styles = StyleSheet.create({
   chooseText: {
     fontWeight: '700',
     fontSize: 12,
+    color: colors.coffeeDark,
   },
   bachgroundChooseText: {
     position: 'absolute',
     borderRadius: 7,
     padding: 4,
-    backgroundColor: 'rgba(225, 227, 227, 0.5)',
+    backgroundColor: 'rgba(247, 241, 231, 0.85)',
   },
   button: {
-    backgroundColor: 'rgb(117, 186, 117)',
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 7,
@@ -61,4 +76,5 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
 });
+
 export default styles;

@@ -1,9 +1,11 @@
 import {StyleSheet} from 'react-native-windows';
+import {colors} from '../../styles/colors';
+
 const styles = StyleSheet.create({
   text: {
-    color: 'black',
+    color: colors.white,
     fontSize: 14,
-    fontWeight: 400,
+    fontWeight: '400',
   },
   isDisabled: {
     position: 'absolute',
@@ -17,51 +19,53 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     padding: 5,
-    backgroundColor: '#cdcbcc',
+    paddingLeft: 15,
+    backgroundColor: colors.coffee,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#e9e9e9',
+    borderColor: colors.caramel,
     overflow: 'visible',
     zIndex: 100,
-    paddingLeft: 15,
-    // trong react native position mặc định là relative. còn web là static
   },
   menuItem: {
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: 'transparent',
+    borderRadius: 5,
   },
   menuItemIsActive: {
-    backgroundColor: '#18619c',
-    borderColor: '#18619c',
+    backgroundColor: colors.coffeeDark,
+    borderColor: colors.coffeeDark,
     borderRadius: 5,
   },
   textActive: {
-    color: 'white',
+    color: colors.white,
+    fontWeight: '600',
   },
   subMenu: {
     position: 'absolute',
     top: '100%',
     left: 0,
-    backgroundColor: '#fff',
+    backgroundColor: colors.white,
     minWidth: 200,
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 3,
+    borderColor: colors.caramel,
+    borderRadius: 5,
     marginTop: 5,
     padding: 10,
+    zIndex: 101,
   },
   underline: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: 1,
-    backgroundColor: 'black',
+    height: 2,
+    backgroundColor: colors.caramel,
   },
   subMenuItem: {
-    paddingVertical: 4,
+    paddingVertical: 6,
   },
   account: {
     position: 'absolute',
@@ -72,4 +76,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
 export default styles;
