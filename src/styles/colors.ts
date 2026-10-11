@@ -8,4 +8,8 @@ export const colors = {
   muted: '#8B8178', // xám nâu //Hủy, thoát
   danger: '#B83B32', // đỏ trầm // Xóa
   white: '#FFFFFF', // text nền màu đậm
+  border: '#E8DCCB',
+  borderDark: '#DCC9B5',
+  background: '#F7F1E7',
+  backgroundDark: '#FBE9E7',
 };

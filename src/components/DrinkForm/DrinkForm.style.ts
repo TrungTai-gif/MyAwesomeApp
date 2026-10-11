@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     minHeight: 30,
     backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: '#DCC9B5',
+    borderColor: colors.borderDark,
     color: colors.danger,
     fontSize: 17,
     fontWeight: '600',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   chooseImage: {
     width: 150,
     height: 150,
-    backgroundColor: '#F7F1E7',
+    backgroundColor: colors.background,
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: colors.caramel,

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(247, 241, 231, 0.92)',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#DCC9B5',
+    borderColor: colors.borderDark,
     padding: 20,
     justifyContent: 'space-around',
   },
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     color: colors.coffeeDark,
   },
   errorBox: {
-    backgroundColor: '#FBE9E7',
+    backgroundColor: colors.backgroundDark,
     paddingVertical: 9,
     borderRadius: 5,
     borderWidth: 1,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: '#DCC9B5',
+    borderColor: colors.borderDark,
     color: colors.coffeeDark,
   },
   buttonBox: {

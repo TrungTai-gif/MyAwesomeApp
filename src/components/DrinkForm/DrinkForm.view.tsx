@@ -40,7 +40,7 @@ const DrinkForm = ({
   const {ImagePicker} = NativeModules;
   useEffect(() => {
     setValueName(selectedDrink?.drinkName ?? '');
-    setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '');
+    setValuePrice(selectedDrink ? formatPrice(selectedDrink.price) : '0');
     setImagePath('');
   }, [selectedDrink]);
   //hanldeCancel

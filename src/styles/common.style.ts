@@ -2,14 +2,7 @@ import {StyleSheet} from 'react-native';
 import {colors} from './colors';
 
 export const common = StyleSheet.create({
-  button: {
-    width: '100%',
-    backgroundColor: colors.green,
-    padding: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   buttonChange: {
     backgroundColor: colors.caramel,
     alignItems: 'center',

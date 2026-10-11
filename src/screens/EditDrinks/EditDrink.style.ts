@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#E8DCCB',
+    borderColor: colors.border,
   },
   button: {
     minWidth: 70,

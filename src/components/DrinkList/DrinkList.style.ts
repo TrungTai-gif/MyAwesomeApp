@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#E8DCCB',
+    borderColor: colors.border,
   },
   info: {
     marginVertical: 4,
