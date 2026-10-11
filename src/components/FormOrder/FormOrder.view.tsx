@@ -5,16 +5,29 @@ import {DataTable} from 'react-native-paper';
 import {Drink} from '../DrinkList/DrinkList.view';
 import {common} from '../../styles/common.style';
 import {formatPrice} from '../../util/formatPrice';
+import {RouteProp, useRoute} from '@react-navigation/native';
+import {RootParameters} from '../../navigation/type';
+import {OrderItem} from '../../screens/OrderDrinks/OrderDrink.view';
 interface FormOrderProps {
-  data: (Drink & {quantity: number})[];
+  // data: (Drink & {quantity: number})[];
+  data: OrderItem[];
   handleQuantity: (drinkId: number, amount: number) => void;
   handleDelete: (drink: Drink) => void;
+  handlePostInvoice: (data: OrderItem[], email: string) => void;
 }
 
-const FormOrder = ({data, handleQuantity, handleDelete}: FormOrderProps) => {
+const FormOrder = ({
+  data,
+  handleQuantity,
+  handleDelete,
+  handlePostInvoice,
+}: FormOrderProps) => {
+  const router = useRoute<RouteProp<RootParameters, 'MainScreen'>>();
+  const email = router.params.email;
   const totalPrice = data.reduce((total, item) => {
     return total + item.price * item.quantity;
   }, 0);
+
   return (
     <View style={styles.drinkFormContainer}>
       <Text style={styles.h1}>Order form</Text>
@@ -68,8 +81,10 @@ const FormOrder = ({data, handleQuantity, handleDelete}: FormOrderProps) => {
             {formatPrice(totalPrice)}
           </Text>
         </View>
-        <TouchableOpacity style={[styles.button, common.buttonSave]}>
-          <Text style={[styles.textButton, common.textWhite]}>Đặt hàng</Text>
+        <TouchableOpacity
+          style={[styles.button, common.buttonSave]}
+          onPress={() => handlePostInvoice(data, email)}>
+          <Text style={[styles.textButton, common.textWhite]}>Lưu và in</Text>
         </TouchableOpacity>
       </View>
     </View>

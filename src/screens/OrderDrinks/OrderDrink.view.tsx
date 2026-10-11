@@ -1,24 +1,28 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState} from 'react';
 import styles from './OrderDrink.style';
 import DrinkList, {Drink} from '../../components/DrinkList/DrinkList.view';
 import {common} from '../../styles/common.style';
 import FormOrder from '../../components/FormOrder/FormOrder.view';
+import {postInvoice} from '../../api/orderApi';
 
 interface OrderDrinkProps {
   drinkData: Drink[];
 }
-type OrderItem = Drink & {
+export type OrderItem = Drink & {
   quantity: number;
 };
 
 const OrderDrink = ({drinkData}: OrderDrinkProps) => {
   const [orderData, setOrderData] = useState<OrderItem[]>([]);
-  //renderDrinkAction
+  //handleAddDrink
   const handleAddDrink = (drink: Drink) => {
     setOrderData(prev => {
       const existing = prev.find(item => item.drinkId === drink.drinkId);
       if (existing) {
+        if (existing.quantity >= 99) {
+          return prev;
+        }
         return prev.map(item =>
           item.drinkId === drink.drinkId
             ? {...item, quantity: item.quantity + 1}
@@ -39,7 +43,7 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
         if (quantity <= 0) {
           return [];
         }
-        if (item.quantity > 99) {
+        if (quantity > 99) {
           return [item];
         }
         return [{...item, quantity}];
@@ -57,6 +61,7 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
             common.buttonAdd,
             orderedItem && styles.addText,
           ]}
+          activeOpacity={0.7}
           onPress={() => {
             handleAddDrink(item);
           }}>
@@ -70,9 +75,28 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
     );
   };
   //handleDelete
-  const handleDelete = (drink : Drink) => {
-    setOrderData(prev => prev.filter(item => item.drinkId !== drink.drinkId))
-  }
+  const handleDelete = (drink: Drink) => {
+    setOrderData(prev => prev.filter(item => item.drinkId !== drink.drinkId));
+  };
+  //handlePostInvoice
+  const handlePostInvoice = async (
+    dataPost: OrderItem[],
+    emailPost: string,
+  ) => {
+    try {
+      const response = await postInvoice(dataPost, emailPost);
+      console.log(response);
+      setOrderData([]);
+      Alert.alert('Thành công', 'Đơn đã được đặt');
+    } catch (err) {
+      Alert.alert('Thất bại', `${err}`);
+      console.log(err);
+    }
+  };
+  //handlePrint 
+  // const handlePrint = () => {
+
+  // }
   return (
     <View style={styles.bodyContainer}>
       <DrinkList drinkData={drinkData} renderAction={renderDrinkAction} />
@@ -81,6 +105,7 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
           data={orderData}
           handleQuantity={handleQuantity}
           handleDelete={handleDelete}
+          handlePostInvoice={handlePostInvoice}
         />
       </View>
     </View>
