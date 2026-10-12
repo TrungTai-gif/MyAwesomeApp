@@ -97,9 +97,5 @@ export async function printReceipt(receipt: ReceiptData): Promise<boolean> {
   }
 
   lines.push('__ITEMS_END__', `__TOTAL__=${formatMoney(total)}`);
-  console.log(
-    '[PRINT] Ngày giờ gửi sang C++:',
-    lines.find(line => line.startsWith('__DATETIME__=')),
-  );
   return nativePrinter.PrintReceipt(lines.join('\n'));
 }
