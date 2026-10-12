@@ -1,4 +1,5 @@
 import {NativeModules} from 'react-native';
+import { formatPrice } from './formatPrice';
 
 export type ReceiptItem = {
   drinkName: string;
@@ -35,7 +36,7 @@ const cleanText = (value: string): string =>
   value.replace(/[\r\n\t]/g, ' ').trim();
 
 const formatMoney = (amount: number): string =>
-  Math.round(amount).toLocaleString('vi-VN') + ' đ';
+  formatPrice(Math.round(amount)) + ' đ';
 
 export async function printReceipt(receipt: ReceiptData): Promise<boolean> {
   if (!nativePrinter?.PrintReceipt) {

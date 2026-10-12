@@ -426,7 +426,7 @@ namespace winrt::MyAwesomeApp::implementation
         TextAlignment::Center);
 
     AddLabel(panel, L"Mã hóa đơn: " + invoiceCode);
-    AddLabel(panel, L"Bàn: " + tableNumber);
+    AddLabel(panel, L"Quầy: " + tableNumber);
     AddLabel(panel, L"Ngày giờ: " + invoiceDate);
 
     // Đây là email nhân viên lấy từ FormOrder.

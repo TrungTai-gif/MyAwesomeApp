@@ -7,8 +7,7 @@ import {common} from '../../styles/common.style';
 import FormOrder from '../../components/FormOrder/FormOrder.view';
 import {postInvoice} from '../../api/orderApi';
 import {printReceipt, ReceiptItem} from '../../util/receiptPrinter';
-import moment from 'moment-timezone';
-
+import {formatVietnamTime} from '../../util/dateTime';
 interface OrderDrinkProps {
   drinkData: Drink[];
 }
@@ -101,9 +100,7 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
         quantity: item.quantity,
         price: Number(item.price),
       }));
-      const invoiceDate = moment()
-        .tz('Asia/Ho_Chi_Minh')
-        .format('DD/MM/YYYY HH:mm:ss');
+      const invoiceDate = formatVietnamTime(savedInvoice.createdAt);
       // Bước 3: Tạo hóa đơn và mở Print Preview
       const printed = await printReceipt({
         invoiceCode: String(savedInvoice.invoiceCode),

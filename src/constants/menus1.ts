@@ -23,7 +23,10 @@ export const menus = [
   {
     id: 4,
     title: 'Cấu hình',
-    items: [{title: 'Đăng xuất', id: 4.1}],
+    items: [
+      {title: 'Cài đặt quầy & Chi nhánh', id: 4.1},
+      {title: 'Đăng xuất', id: 4.2},
+    ],
   },
 ];
 

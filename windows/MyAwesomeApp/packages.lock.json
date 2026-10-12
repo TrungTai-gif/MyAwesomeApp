@@ -74,14 +74,14 @@
           "Microsoft.UI.Xaml": "[2.8.0, )"
         }
       },
-      "rnscreens": {
+      "reactnativepicker": {
         "type": "Project",
         "dependencies": {
           "Microsoft.ReactNative": "[1.0.0, )",
           "Microsoft.UI.Xaml": "[2.8.0, )"
         }
       },
-      "rnsvg": {
+      "rnscreens": {
         "type": "Project",
         "dependencies": {
           "Microsoft.ReactNative": "[1.0.0, )",

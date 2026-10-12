@@ -19,6 +19,7 @@ import {NativeModules} from 'react-native';
 import {Drink} from '../DrinkList/DrinkList.view';
 import {common} from '../../styles/common.style';
 import {colors} from '../../styles/colors';
+import FontAwesome from '@react-native-vector-icons/fontawesome';
 
 interface DrinkFormProps {
   selectedDrink: Drink | null;
@@ -101,13 +102,28 @@ const DrinkForm = ({
       </View>
       <TouchableOpacity style={styles.chooseImage} onPress={handlePickImage}>
         {imagePath ? (
-          <Image style={styles.image} source={{uri: imagePath}} />
+          <View style={styles.image}>
+            <Image style={styles.image} source={{ uri: imagePath }} />
+            <View style={styles.bachgroundChooseText}>
+              <Text style={styles.chooseText}>Chọn hình ảnh</Text>
+            </View>
+          </View>
         ) : selectedDrink?.imageUrl ? (
-          <Image style={styles.image} source={{uri: selectedDrink.imageUrl}} />
-        ) : null}
-        <View style={styles.bachgroundChooseText}>
-          <Text style={styles.chooseText}>Chọn hình ảnh</Text>
-        </View>
+          <View style={styles.image}>
+            <Image
+              style={styles.image}
+              source={{uri: selectedDrink.imageUrl}}
+            />
+            <View style={styles.bachgroundChooseText}>
+              <Text style={styles.chooseText}>Chọn hình ảnh</Text>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.bachgroundChooseText}>
+            <FontAwesome name="image" size={60} color={colors.coffee} />
+            <Text style={styles.chooseText}>Chọn hình ảnh</Text>
+          </View>
+        )}
       </TouchableOpacity>
       <View style={styles.buttonContainer}>
         <Pressable

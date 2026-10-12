@@ -53,15 +53,19 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   chooseText: {
-    fontWeight: '700',
-    fontSize: 12,
+    fontWeight: '600',
+    fontSize: 13,
     color: colors.coffeeDark,
   },
   bachgroundChooseText: {
+    width: '100%',
+    height: '100%',
     position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 7,
     padding: 4,
-    backgroundColor: 'rgba(247, 241, 231, 0.85)',
+    backgroundColor: 'rgba(247, 241, 231, 0.5)',
   },
   button: {
     paddingVertical: 10,

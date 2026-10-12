@@ -7,7 +7,8 @@ import {common} from '../../styles/common.style';
 import {formatPrice} from '../../util/formatPrice';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {RootParameters} from '../../navigation/type';
-import {OrderItem} from '../../screens/OrderDrinks/OrderDrink.view';
+import { OrderItem } from '../../screens/OrderDrinks/OrderDrink.view';
+import {FontAwesome} from '@react-native-vector-icons/fontawesome';
 interface FormOrderProps {
   // data: (Drink & {quantity: number})[];
   data: OrderItem[];
@@ -66,7 +67,8 @@ const FormOrder = ({
                   <TouchableOpacity
                     style={styles.delete}
                     onPress={() => handleDelete(item)}>
-                    <Text style={styles.textDelete}>🗑️</Text>
+                    {/* <Text style={styles.textDelete}>x</Text> */}
+                    <FontAwesome name="trash" size={15} color="#d21919" />
                   </TouchableOpacity>
                 </View>
               </DataTable.Row>

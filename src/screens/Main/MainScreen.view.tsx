@@ -12,6 +12,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootParameters} from '../../navigation/type';
 import {setLogoutHandler, triggerLogout} from '../../util/authEvent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ConfigPos from '../ConfigPos/ConfigPos.view';
 
 // import {useNavigation, NavigationProp} from '@react-navigation/native';
 // const navigation = useNavigation<NavigationProp<Rootparameters, 'Login'>>();
@@ -42,7 +43,7 @@ const MainScreen = () => {
   }, [navigation]);
   //handleMenuPress
   const handleMenuPress = async (menuId: number) => {
-    if (menuId === 4.1) {
+    if (menuId === 4.2) {
       await AsyncStorage.removeItem('token');
       triggerLogout();
       return;
@@ -56,6 +57,7 @@ const MainScreen = () => {
         <EditDrink drinkData={drinkData} setDrinkData={setDrinkData} />
       )}
       {selectedMenu === 2.2 && <OrderDrink drinkData={drinkData} />}
+      {selectedMenu === 4.1 && <ConfigPos/>}
       <Footer />
     </View>
   );

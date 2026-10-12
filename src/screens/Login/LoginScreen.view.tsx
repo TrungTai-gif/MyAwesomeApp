@@ -12,8 +12,7 @@ import styles from './LoginScreen.style';
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootParameters} from '../../navigation/type';
-import {login} from '../../api/authApi';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {login} from '../../api/tokenApi';
 
 const emailRegex =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
@@ -30,11 +29,11 @@ const LoginScreen = () => {
 
   async function handleLogin() {
     if (!email || !password) {
-      await AsyncStorage.setItem(
-        'token',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZvbG9kaWExOTE3QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiRnVsbE5hbWUiOiJOZ3V54buFbiBWaeG6v3QgQ8aw4budbmciLCJleHAiOjE3OTE0MTM3ODJ9.SL90LQUnAAWF_2YR-tZAu747i3quSUoJGHB4Pv8Epj0',
-      );
-      navigation.replace('MainScreen', {email: email});
+      // await AsyncStorage.setItem(
+      //   'token',
+      //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZvbG9kaWExOTE3QGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiRnVsbE5hbWUiOiJOZ3V54buFbiBWaeG6v3QgQ8aw4budbmciLCJleHAiOjE3OTE0MTM3ODJ9.SL90LQUnAAWF_2YR-tZAu747i3quSUoJGHB4Pv8Epj0',
+      // );
+      // navigation.replace('MainScreen', {email: email});
       setErrorMessage('Phải nhập cả email và mật khẩu.');
       return;
     }
