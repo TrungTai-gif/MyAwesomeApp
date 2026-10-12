@@ -2,6 +2,7 @@
 #include "ReactPackageProvider.h"
 #include "ImagePicker.h"
 #include "NativeModules.h"
+#include "ReceiptPrinter.h"
 
 using namespace winrt::Microsoft::ReactNative;
 

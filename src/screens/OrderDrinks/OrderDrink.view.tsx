@@ -1,21 +1,25 @@
 import {View, Text, TouchableOpacity, Alert} from 'react-native';
 import React, {useState} from 'react';
+
 import styles from './OrderDrink.style';
 import DrinkList, {Drink} from '../../components/DrinkList/DrinkList.view';
 import {common} from '../../styles/common.style';
 import FormOrder from '../../components/FormOrder/FormOrder.view';
 import {postInvoice} from '../../api/orderApi';
+import {printReceipt, ReceiptItem} from '../../util/receiptPrinter';
+import moment from 'moment-timezone';
 
 interface OrderDrinkProps {
   drinkData: Drink[];
 }
+
 export type OrderItem = Drink & {
   quantity: number;
 };
 
 const OrderDrink = ({drinkData}: OrderDrinkProps) => {
   const [orderData, setOrderData] = useState<OrderItem[]>([]);
-  //handleAddDrink
+  // Thêm món vào đơn hàng
   const handleAddDrink = (drink: Drink) => {
     setOrderData(prev => {
       const existing = prev.find(item => item.drinkId === drink.drinkId);
@@ -32,7 +36,8 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
       return [...prev, {...drink, quantity: 1}];
     });
   };
-  //handleQuantity
+
+  // Tăng hoặc giảm số lượng món
   const handleQuantity = (drinkId: number, amount: number) => {
     setOrderData(prev =>
       prev.flatMap(item => {
@@ -50,53 +55,80 @@ const OrderDrink = ({drinkData}: OrderDrinkProps) => {
       }),
     );
   };
-  //renderDrinkAction
+
+  // Nút thêm món trong danh sách
   const renderDrinkAction = (item: Drink) => {
     const orderedItem = orderData.find(drink => drink.drinkId === item.drinkId);
     return (
-      <>
-        <TouchableOpacity
-          style={[
-            styles.button,
-            common.buttonAdd,
-            orderedItem && styles.addText,
-          ]}
-          activeOpacity={0.7}
-          onPress={() => {
-            handleAddDrink(item);
-          }}>
-          <Text style={common.textWhite}>
-            {orderedItem
-              ? `Đã thêm (+1) · SL: ${orderedItem.quantity}`
-              : 'Thêm đơn hàng'}
-          </Text>
-        </TouchableOpacity>
-      </>
+      <TouchableOpacity
+        style={[styles.button, common.buttonAdd, orderedItem && styles.addText]}
+        activeOpacity={0.7}
+        onPress={() => handleAddDrink(item)}>
+        <Text style={common.textWhite}>
+          {orderedItem
+            ? `Đã thêm (+1) · SL: ${orderedItem.quantity}`
+            : 'Thêm đơn hàng'}
+        </Text>
+      </TouchableOpacity>
     );
   };
-  //handleDelete
+  // Xóa món khỏi đơn hàng
   const handleDelete = (drink: Drink) => {
     setOrderData(prev => prev.filter(item => item.drinkId !== drink.drinkId));
   };
-  //handlePostInvoice
+  // Lưu hóa đơn và mở Print Preview
   const handlePostInvoice = async (
     dataPost: OrderItem[],
     emailPost: string,
   ) => {
     try {
-      const response = await postInvoice(dataPost, emailPost);
-      console.log(response);
-      setOrderData([]);
-      Alert.alert('Thành công', 'Đơn đã được đặt');
-    } catch (err) {
-      Alert.alert('Thất bại', `${err}`);
-      console.log(err);
+      if (dataPost.length === 0) {
+        Alert.alert('Thông báo', 'Vui lòng chọn ít nhất một món.');
+        return;
+      }
+      if (!emailPost.trim()) {
+        Alert.alert('Thông báo', 'Vui lòng nhập email nhân viên.');
+        return;
+      }
+      // Bước 1: Lưu hóa đơn qua API hiện tại
+      const savedInvoice = await postInvoice(dataPost, emailPost);
+      if (!savedInvoice) {
+        throw new Error('Không lưu được hóa đơn.');
+      }
+      // Bước 2: Chuẩn hóa danh sách món để in
+      const receiptItems: ReceiptItem[] = dataPost.map(item => ({
+        drinkName: item.drinkName,
+        quantity: item.quantity,
+        price: Number(item.price),
+      }));
+      const invoiceDate = moment()
+        .tz('Asia/Ho_Chi_Minh')
+        .format('DD/MM/YYYY HH:mm:ss');
+      // Bước 3: Tạo hóa đơn và mở Print Preview
+      const printed = await printReceipt({
+        invoiceCode: String(savedInvoice.invoiceCode),
+        tableNumber: Number(savedInvoice.tableNumber),
+        staffEmail: emailPost,
+        items: receiptItems,
+        invoiceDate,
+      });
+      if (printed) {
+        setOrderData([]);
+        Alert.alert('Thành công', 'Đã lưu hóa đơn');
+      } else {
+        Alert.alert('Thông báo', 'Hộp thoại in đã đóng hoặc chưa xác nhận in.');
+      }
+    } catch (error) {
+      console.error('Lỗi lưu hoặc in hóa đơn:', error);
+      Alert.alert(
+        'Lỗi',
+        error instanceof Error
+          ? error.message
+          : 'Không thể lưu hoặc in hóa đơn.',
+      );
     }
   };
-  //handlePrint 
-  // const handlePrint = () => {
 
-  // }
   return (
     <View style={styles.bodyContainer}>
       <DrinkList drinkData={drinkData} renderAction={renderDrinkAction} />
